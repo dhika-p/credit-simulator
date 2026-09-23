@@ -1,12 +1,13 @@
 package com.dhikaadeputra.creditsimulator.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 public class WorkbookModel {
-    private Map<String, SimulationSheetModel> sheets;
+    private Map<String, SimulationSheetModel> sheets = new HashMap<>();
 
     public void save(SimulationSheetModel sheet){
         if(sheets.containsKey(sheet.getName())){
