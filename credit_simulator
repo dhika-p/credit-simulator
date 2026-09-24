@@ -1,0 +1,19 @@
+#!/bin/sh
+# Menjalankan Credit Simulator.
+#   ./credit_simulator                   mode interaktif
+#   ./credit_simulator file_inputs.txt   mode file
+set -e
+
+ROOT="$(cd "$(dirname "$0")" && pwd)"
+JAR="$ROOT/target/credit-simulator.jar"
+if ! command -v java >/dev/null 2>&1; then
+    echo "Error: Java 17+ belum terpasang atau tidak ada di PATH." >&2
+    exit 1
+fi
+
+if [ ! -f "$JAR" ]; then
+    echo "Build pertama tunggu..." >&2
+    (cd "$ROOT" && sh ./mvnw -q -DskipTests package) >&2
+fi
+
+exec java -jar "$JAR" "$@"
