@@ -42,6 +42,8 @@ public class WebServiceDataSource implements LoanDataSource {
                     .build();
 
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IllegalArgumentException e) {
+            throw new DataSourceException("URL tidak valid: " + url);
         } catch (IOException e) {
             throw new DataSourceException("Tidak dapat mengambil data dari web service ");
         } catch (InterruptedException e) {

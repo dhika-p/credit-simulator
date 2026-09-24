@@ -16,7 +16,8 @@ public class LoanDataSourceFactory {
 
     public LoanDataSource  create(SourceTypeModel source, String argument ) {
         return switch(source) {
-            case WEB_SERVICE -> new WebServiceDataSource(config.webServiceUrl(), config.timeout(), parser);
+            case WEB_SERVICE -> new WebServiceDataSource(
+                    argument != null ? argument : config.webServiceUrl(), config.timeout(), parser);
             case FILE -> throw new UnsupportedOperationException("FileDataSource belum dibuat");
         };
     }

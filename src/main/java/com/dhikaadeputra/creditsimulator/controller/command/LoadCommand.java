@@ -34,15 +34,24 @@ public class LoadCommand implements Command {
 
     @Override
     public String desc() {
-        return "Ambil data dari enpoint dan hitung otomatis";
+        return "Ambil data dari enpoint dan hitung otomatis (opsi: -url \"<url>\")";
     }
 
     @Override
     public void execute(WorkbookModel workbook, String[] args) {
+        String url = null;
+        if (args.length > 0) {
+            if (args.length != 2 || !args[0].equals("-url")) {
+                view.showError("Format: load  atau  load -url \"<url>\"");
+                return;
+            }
+            url = stripQuotes(args[1]);
+        }
+
         List<LoanRequestModel> requests;
         try {
             view.showMessage("Mengambil data dari enpoint...");
-            requests = dataSourceFactory.create(SourceTypeModel.WEB_SERVICE, null).read();
+            requests = dataSourceFactory.create(SourceTypeModel.WEB_SERVICE, url).read();
         } catch (DataSourceException e) {
             view.showError(e.getMessage());
             return;
@@ -59,5 +68,13 @@ public class LoadCommand implements Command {
             List<YearlyInstallmentModel> result = calculator.calculate(request);
             view.showResult(request, principal, result);
         }
+    }
+
+    private String stripQuotes(String text) {
+        if (text.length() >= 2 && (text.startsWith("\"") && text.endsWith("\"")
+                || text.startsWith("'") && text.endsWith("'"))) {
+            return text.substring(1, text.length() - 1);
+        }
+        return text;
     }
 }
