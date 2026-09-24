@@ -7,8 +7,6 @@ import com.dhikaadeputra.creditsimulator.view.ConsoleView;
 
 import java.util.Optional;
 
-import javax.swing.text.View;
-
 public class SimulationController {
     private final CommandRegistry registry;
     private final ConsoleView view;
@@ -20,7 +18,24 @@ public class SimulationController {
         this.workbook = workbook;
     }
 
-    public void run() {
+    public void run(String[] programArgs) {
+        if (programArgs.length > 0) {
+            runFileMode(programArgs);
+            return;
+        }
+        runInteractive();
+    }
+
+    private void runFileMode(String[] programArgs) {
+        Optional<Command> file = registry.find("file");
+        if (file.isEmpty()) {
+            view.showError("Mode file tidak tersedia.");
+            return;
+        }
+        file.get().execute(workbook, programArgs);
+    }
+
+    private void runInteractive() {
         view.showMessage("=== Credit Simulator ===");
         view.showMessage("Ketik 'show' untuk melihat daftar perintah, 'exit' untuk keluar.");
 

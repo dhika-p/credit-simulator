@@ -1,5 +1,7 @@
 package com.dhikaadeputra.creditsimulator.datasource;
 
+import java.nio.file.Path;
+
 import com.dhikaadeputra.creditsimulator.config.AppConfig;
 import com.dhikaadeputra.creditsimulator.datasource.json.SimpleJsonParser;
 import com.dhikaadeputra.creditsimulator.model.SourceTypeModel;
@@ -18,7 +20,7 @@ public class LoanDataSourceFactory {
         return switch(source) {
             case WEB_SERVICE -> new WebServiceDataSource(
                     argument != null ? argument : config.webServiceUrl(), config.timeout(), parser);
-            case FILE -> throw new UnsupportedOperationException("FileDataSource belum dibuat");
+            case FILE -> new FileDataSource(Path.of(argument));
         };
     }
 }

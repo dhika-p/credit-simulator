@@ -1,0 +1,6 @@
+# jenis,kondisi,tahun,harga,tenor,dp
+# Baris kosong dan baris berawalan # diabaikan.
+Mobil,Bekas,2020,100000000,3,25000000
+Mobil,Baru,2026,250000000,4,87500000
+Motor,Baru,2026,30000000,2,10500000
+Motor,Bekas,2019,15000000,6,3750000

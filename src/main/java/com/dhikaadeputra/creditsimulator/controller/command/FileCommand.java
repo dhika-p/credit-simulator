@@ -1,5 +1,6 @@
 package com.dhikaadeputra.creditsimulator.controller.command;
 
+import java.nio.file.InvalidPathException;
 import java.util.List;
 
 import com.dhikaadeputra.creditsimulator.datasource.LoanDataSourceFactory;
@@ -9,12 +10,12 @@ import com.dhikaadeputra.creditsimulator.model.SourceTypeModel;
 import com.dhikaadeputra.creditsimulator.model.WorkbookModel;
 import com.dhikaadeputra.creditsimulator.view.ConsoleView;
 
-public class LoadCommand implements Command {
+public class FileCommand implements Command {
     private final ConsoleView view;
     private final LoanDataSourceFactory dataSourceFactory;
     private final LoanBatchProcessor processor;
 
-    public LoadCommand(ConsoleView view, LoanDataSourceFactory dataSourceFactory, LoanBatchProcessor processor) {
+    public FileCommand(ConsoleView view, LoanDataSourceFactory dataSourceFactory, LoanBatchProcessor processor) {
         this.view = view;
         this.dataSourceFactory = dataSourceFactory;
         this.processor = processor;
@@ -22,29 +23,30 @@ public class LoadCommand implements Command {
 
     @Override
     public String name() {
-        return "load";
+        return "file";
     }
 
     @Override
     public String desc() {
-        return "Ambil data dari enpoint dan hitung otomatis (opsi: -url \"<url>\")";
+        return "Baca simulasi dari file dan hitung otomatis (format: file <path>)";
     }
 
     @Override
     public void execute(WorkbookModel workbook, String[] args) {
-        String url = null;
-        if (args.length > 0) {
-            if (args.length != 2 || !args[0].equals("-url")) {
-                view.showError("Format: load  atau  load -url \"<url>\"");
-                return;
-            }
-            url = stripQuotes(args[1]);
+        if (args.length == 0) {
+            view.showError("Format: file <path>");
+            return;
         }
+
+        String path = stripQuotes(String.join(" ", args).trim());
 
         List<LoanRequestModel> requests;
         try {
-            view.showMessage("Mengambil data dari enpoint...");
-            requests = dataSourceFactory.create(SourceTypeModel.WEB_SERVICE, url).read();
+            view.showMessage("Membaca file " + path + "...");
+            requests = dataSourceFactory.create(SourceTypeModel.FILE, path).read();
+        } catch (InvalidPathException e) {
+            view.showError("Path file tidak valid: " + path);
+            return;
         } catch (DataSourceException e) {
             view.showError(e.getMessage());
             return;
