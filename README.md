@@ -256,6 +256,8 @@ Workflow ada di [`.github/workflows/ci-master.yml`](.github/workflows/ci-master.
 
 1. **Endpoint `load`**: URL `mocky.io` di soal sudah tidak aktif (HTTP 404), sehingga default diganti ke mock
    di GitHub Gist dengan struktur JSON di atas. URL bisa diganti tanpa build ulang.
+   new mock url:
+   https://gist.githubusercontent.com/dhika-visionet/dd2d029bef57c61041d18dfbcc20e8d4/raw/1ca0655e95720effa1dfcf97134af8e397c07c44/loadtest.json
 2. **Aturan DP kendaraan Bekas**: di soal tertulis "Baru ≥ 25%" dua kali, dianggap typo dan maksudnya kendaraan **Bekas**.
 3. **Rumus cicilan** mengikuti `Rumus.xlsx`
 4. **`load`** adalah perintah di menu, bukan dijalankan otomatis saat aplikasi mulai.
