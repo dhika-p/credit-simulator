@@ -35,8 +35,9 @@ public class CalculateCommand implements Command {
         this.vehicleYearRule = vehicleYearRule;
         this.downPaymentRule = downPaymentRule;
         this.loanAmountRule = loanAmountRule;
-        this.loanValidator = loanValidator;
         this.tenureRule = tenureRule;
+
+        this.loanValidator = loanValidator; //validate semua
     }
 
     @Override

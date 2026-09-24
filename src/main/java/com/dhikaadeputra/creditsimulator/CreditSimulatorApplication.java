@@ -2,8 +2,12 @@ package com.dhikaadeputra.creditsimulator;
 
 import com.dhikaadeputra.creditsimulator.controller.SimulationController;
 import com.dhikaadeputra.creditsimulator.controller.command.CalculateCommand;
+import com.dhikaadeputra.creditsimulator.config.AppConfig;
 import com.dhikaadeputra.creditsimulator.controller.command.CommandRegistry;
+import com.dhikaadeputra.creditsimulator.controller.command.LoadCommand;
 import com.dhikaadeputra.creditsimulator.controller.command.ShowCommand;
+import com.dhikaadeputra.creditsimulator.datasource.LoanDataSourceFactory;
+import com.dhikaadeputra.creditsimulator.datasource.json.SimpleJsonParser;
 import com.dhikaadeputra.creditsimulator.model.WorkbookModel;
 import com.dhikaadeputra.creditsimulator.service.CreditCalculatorService;
 import com.dhikaadeputra.creditsimulator.validation.DownPaymentRule;
@@ -34,11 +38,15 @@ public class CreditSimulatorApplication {
         LoanValidator loanValidator = new LoanValidator(List.of(
                 vehicleYearRule, downPaymentRule, loanAmountRule, tenureRule));
 
+        AppConfig config = AppConfig.fromEnvironment(System.getenv());
+        LoanDataSourceFactory dataSourceFactory = new LoanDataSourceFactory(config, new SimpleJsonParser());
+
         WorkbookModel workbook = new WorkbookModel();
 
         CommandRegistry registry = new CommandRegistry();
         registry.register(new CalculateCommand(view, calculator, vehicleYearRule, downPaymentRule,
                 loanAmountRule, loanValidator, tenureRule));
+        registry.register(new LoadCommand(view, dataSourceFactory, calculator, loanValidator));
         registry.register(new ShowCommand(registry, view));
 
         SimulationController controller = new SimulationController(registry, view, workbook);

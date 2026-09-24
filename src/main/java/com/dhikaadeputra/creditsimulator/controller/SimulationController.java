@@ -7,6 +7,8 @@ import com.dhikaadeputra.creditsimulator.view.ConsoleView;
 
 import java.util.Optional;
 
+import javax.swing.text.View;
+
 public class SimulationController {
     private final CommandRegistry registry;
     private final ConsoleView view;
