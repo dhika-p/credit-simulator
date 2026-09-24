@@ -47,6 +47,10 @@ java -jar target\credit-simulator.jar file_inputs.txt
 Image: https://hub.docker.com/r/dhikap/credit-simulator
 
 ```bash
+docker pull dhikap/credit-simulator
+```
+
+```bash
 # mode interaktif (wajib pakai -it)
 docker run -it --rm dhikap/credit-simulator
 
