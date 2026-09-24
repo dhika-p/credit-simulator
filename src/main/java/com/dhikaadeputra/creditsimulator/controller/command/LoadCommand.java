@@ -38,7 +38,7 @@ public class LoadCommand implements Command {
                 view.showError("Format: load  atau  load -url \"<url>\"");
                 return;
             }
-            url = stripQuotes(args[1]);
+            url = CommandArgs.stripQuotes(args[1]);
         }
 
         List<LoanRequestModel> requests;
@@ -50,14 +50,6 @@ public class LoadCommand implements Command {
             return;
         }
 
-        processor.process(requests);
-    }
-
-    private String stripQuotes(String text) {
-        if (text.length() >= 2 && (text.startsWith("\"") && text.endsWith("\"")
-                || text.startsWith("'") && text.endsWith("'"))) {
-            return text.substring(1, text.length() - 1);
-        }
-        return text;
+        processor.process(workbook, requests);
     }
 }

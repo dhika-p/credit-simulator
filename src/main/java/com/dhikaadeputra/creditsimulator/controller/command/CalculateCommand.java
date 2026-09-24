@@ -63,6 +63,7 @@ public class CalculateCommand implements Command {
         BigDecimal principal = request.getTotalLoanAmount().subtract(request.getDownPayment());
         List<YearlyInstallmentModel> result = calculator.calculate(request);
         view.showResult(request, principal, result);
+        workbook.setLastResult(request, result);
     }
 
     private VehicleTypeModel promptVehicleType() {

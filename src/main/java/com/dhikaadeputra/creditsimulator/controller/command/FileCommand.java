@@ -38,7 +38,7 @@ public class FileCommand implements Command {
             return;
         }
 
-        String path = stripQuotes(String.join(" ", args).trim());
+        String path = CommandArgs.text(args);
 
         List<LoanRequestModel> requests;
         try {
@@ -52,14 +52,6 @@ public class FileCommand implements Command {
             return;
         }
 
-        processor.process(requests);
-    }
-
-    private String stripQuotes(String text) {
-        if (text.length() >= 2 && (text.startsWith("\"") && text.endsWith("\"")
-                || text.startsWith("'") && text.endsWith("'"))) {
-            return text.substring(1, text.length() - 1);
-        }
-        return text;
+        processor.process(workbook, requests);
     }
 }

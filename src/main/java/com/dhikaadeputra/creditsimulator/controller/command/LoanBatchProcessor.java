@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.dhikaadeputra.creditsimulator.model.LoanRequestModel;
+import com.dhikaadeputra.creditsimulator.model.WorkbookModel;
 import com.dhikaadeputra.creditsimulator.model.YearlyInstallmentModel;
 import com.dhikaadeputra.creditsimulator.service.CreditCalculatorService;
 import com.dhikaadeputra.creditsimulator.validation.LoanValidator;
@@ -20,7 +21,7 @@ public class LoanBatchProcessor {
         this.loanValidator = loanValidator;
     }
 
-    public void process(List<LoanRequestModel> requests) {
+    public void process(WorkbookModel workbook, List<LoanRequestModel> requests) {
         for (int i = 0; i < requests.size(); i++) {
             LoanRequestModel request = requests.get(i);
             if (requests.size() > 1) {
@@ -37,6 +38,7 @@ public class LoanBatchProcessor {
             BigDecimal principal = request.getTotalLoanAmount().subtract(request.getDownPayment());
             List<YearlyInstallmentModel> result = calculator.calculate(request);
             view.showResult(request, principal, result);
+            workbook.setLastResult(request, result);
         }
     }
 }

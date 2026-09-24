@@ -7,6 +7,8 @@ import com.dhikaadeputra.creditsimulator.controller.command.CommandRegistry;
 import com.dhikaadeputra.creditsimulator.controller.command.FileCommand;
 import com.dhikaadeputra.creditsimulator.controller.command.LoadCommand;
 import com.dhikaadeputra.creditsimulator.controller.command.LoanBatchProcessor;
+import com.dhikaadeputra.creditsimulator.controller.command.SaveCommand;
+import com.dhikaadeputra.creditsimulator.controller.command.SheetCommand;
 import com.dhikaadeputra.creditsimulator.controller.command.ShowCommand;
 import com.dhikaadeputra.creditsimulator.datasource.LoanDataSourceFactory;
 import com.dhikaadeputra.creditsimulator.datasource.json.SimpleJsonParser;
@@ -51,6 +53,8 @@ public class CreditSimulatorApplication {
         LoanBatchProcessor batchProcessor = new LoanBatchProcessor(view, calculator, loanValidator);
         registry.register(new LoadCommand(view, dataSourceFactory, batchProcessor));
         registry.register(new FileCommand(view, dataSourceFactory, batchProcessor));
+        registry.register(new SaveCommand(view));
+        registry.register(new SheetCommand(view));
         registry.register(new ShowCommand(registry, view));
 
         SimulationController controller = new SimulationController(registry, view, workbook);

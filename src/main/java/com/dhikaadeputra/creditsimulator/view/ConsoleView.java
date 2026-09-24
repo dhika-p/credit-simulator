@@ -1,6 +1,7 @@
 package com.dhikaadeputra.creditsimulator.view;
 
 import com.dhikaadeputra.creditsimulator.model.LoanRequestModel;
+import com.dhikaadeputra.creditsimulator.model.SimulationSheetModel;
 import com.dhikaadeputra.creditsimulator.model.VehicleConditionModel;
 import com.dhikaadeputra.creditsimulator.model.VehicleTypeModel;
 import com.dhikaadeputra.creditsimulator.model.YearlyInstallmentModel;
@@ -73,6 +74,30 @@ public class ConsoleView {
 
         out.println();
         out.println(installmentTableFormatter.formatSummary(installments));
+    }
+
+    public void showSheets(List<SimulationSheetModel> sheets) {
+        if (sheets.isEmpty()) {
+            out.println("Belum ada sheet. Simpan hasil simulasi dengan: save \"<nama>\"");
+            return;
+        }
+
+        int nameWidth = 0;
+        for (SimulationSheetModel sheet : sheets) {
+            nameWidth = Math.max(nameWidth, sheet.getName().length());
+        }
+
+        out.println("Sheet tersimpan:");
+        for (SimulationSheetModel sheet : sheets) {
+            LoanRequestModel request = sheet.getRequest();
+            out.println(String.format("  %-" + nameWidth + "s   %s %s %d, %s, %d tahun",
+                    sheet.getName(),
+                    vehicleTypeLabel(request.getVehicleTypeModel()),
+                    vehicleConditionLabel(request.getVehicleConditionModel()),
+                    request.getVehicleYear(),
+                    currencyFormatter.format(request.getTotalLoanAmount()),
+                    request.getLoanTenure()));
+        }
     }
 
     private String vehicleTypeLabel(VehicleTypeModel type) {
